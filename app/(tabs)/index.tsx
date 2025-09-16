@@ -13,7 +13,7 @@ export default function HomeScreen() {
   const oneshot = '0234a31e-a729-4e28-9d6a-3f87c4966b9e';
   const romance = '423e2eae-a7a2-4a8b-ac03-a8351462d71d';
   const comedy = '4d32cc48-9f00-4cca-9b5a-a839f0764984';
-
+  
   useEffect(() => {
     const t1 = setTimeout(() => setShowSecond(true), 1000);
     const t2 = setTimeout(() => setShowThird(true), 2000);

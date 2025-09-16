@@ -16,34 +16,38 @@ interface MangaDetailPageProps {
 
 export default function MangaDetailScreen({ manga }: MangaDetailPageProps) {
   const [activeTab, setActiveTab] = useState<'chapters' | 'related'>('chapters');
+  const title = manga.attributes.title.vi ? manga.attributes.title.vi : manga.attributes.title.en
   const attributes = manga.attributes;
-
+  const altTitle = attributes.altTitles
+    .map(item => item.vi || item.en || item.ja) 
+    .filter(Boolean) 
+    .join(', '); 
   const coverArt = manga.relationships.find(rel => rel.type === 'cover_art');
   const coverArtFileName = coverArt?.attributes?.fileName;
   const coverImageUrl = coverArtFileName ? `https://uploads.mangadex.org/covers/${manga.id}/${coverArtFileName}` : '';
 
   const authorId = manga.relationships.find(item => item.type === 'author')?.id;
-//   const { data: author, isLoading, isError } = useQuery(getAuthorById({ id: authorId! }));
-//   const { data: chapter } = useQuery(getChaptersByMangaId({ id: manga.id, lang: ['vi'] }));
+  //   const { data: author, isLoading, isError } = useQuery(getAuthorById({ id: authorId! }));
+  //   const { data: chapter } = useQuery(getChaptersByMangaId({ id: manga.id, lang: ['vi'] }));
 
-//   if (isLoading) return <Loading />;
-//   if (isError) return <Error />;
+  //   if (isLoading) return <Loading />;
+  //   if (isError) return <Error />;
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#0f172a' }}>
-      {/* Cover Image */}
       <View style={{ alignItems: 'center', padding: 16 }}>
         <Image
           source={{ uri: coverImageUrl }}
+          defaultSource={require("@/assets/images/xin-loi-ouguri-cap-cua-toi-an-het-anh-roi.jpg")}
           style={{ width: 200, height: 300, borderRadius: 12 }}
           resizeMode="cover"
         />
-        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, marginTop: 8 }}>
-          {attributes.title.en}
+        <Text style={[{ color: 'white', fontWeight: 'bold', fontSize: 22, marginTop: 16 }]}>
+          {title}
         </Text>
-        {/* <Text style={{ color: 'gray', fontSize: 14 }}>
-          {author?.data.attributes.name || 'Chưa rõ tác giả'}
-        </Text> */}
+        <Text style={{ color: 'white', fontSize: 14, paddingTop: 16, fontStyle: 'italic' }}>
+          {altTitle}
+        </Text>
       </View>
 
       {/* Info */}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, Dimensions, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from "expo-router";
 import { useQuery } from '@tanstack/react-query';
 import { getNewManga } from '@/api/manga/get-latest-updated-manga';
 import { contentRatingColors } from '@/utils/static';
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const SlideMangaCardFullWidth: React.FC<Props> = ({ id }) => {
-  const navigation = useNavigation();
+  const router = useRouter();
   const [isLoaded, setIsLoaded] = useState(false);
 
   const { data: newManga, isLoading, isError } = useQuery(getNewManga({ limit: 10 }));
@@ -44,9 +44,9 @@ const SlideMangaCardFullWidth: React.FC<Props> = ({ id }) => {
             : '';
 
           const handleClick = () => {
-            // if (manga.id.trim()) {
-            //   navigation.navigate('MangaDetail', { mangaId: manga.id.trim() });
-            // }
+            if (manga.id.trim()) {
+              router.push({ pathname: '/manga-detail', params: { id: manga.id.trim() } })
+            }
           };
 
           return (

@@ -37,7 +37,7 @@ export default function TabLayout() {
         options={{
           title: 'Tìm kiếm',
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="magnifyingglass" color={color} />
+            <IconSymbol size={28} name="a.magnify" color={color} />
           ),
         }}
       />

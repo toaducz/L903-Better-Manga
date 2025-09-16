@@ -34,7 +34,17 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
           <Stack.Screen name='+not-found' />
-          <Stack.Screen name='manga-detail' options={{ title: 'Chi tiết Manga' }} />
+          <Stack.Screen name='manga-detail' options={{
+            title: 'Chi tiết Manga',
+            headerStyle: {
+              backgroundColor: '#192d5aff', // đổi màu nền thanh trên
+            },
+            headerTintColor: '#fff', // đổi màu text và icon (back button)
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 18,
+            },
+          }} />
           {/* <Stack.Screen name='anime-search-result' options={{ title: 'Kết quả tìm kiếm' }} /> */}
         </Stack>
         <StatusBar style='auto' />

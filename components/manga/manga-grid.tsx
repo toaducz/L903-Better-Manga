@@ -5,20 +5,17 @@ import MangaItem from "@/components/manga/manga-items";
 import { Manga } from "@/api/paginate";
 import { getTopMangaByTagId } from "@/api/manga/get-manga-by-tag-id";
 import { useQuery } from "@tanstack/react-query";
-import { ThemedView } from "../themed-view";
-import { ActivityIndicator } from "react-native";
 import Loading from "../status/loading";
 import Error from "../status/error";
 
 interface MangaGridProps {
-    title: string;
+    title: string
     tagId: string[];
 }
 
 const MangaGrid: React.FC<MangaGridProps> = ({ title, tagId }) => {
-    const router = useRouter();
 
-    const { data: mangas, isLoading, isError, error } = useQuery(getTopMangaByTagId({ id: tagId, offset: 0, limit: 10 }))
+    const { data: mangas, isLoading, isError, error } = useQuery(getTopMangaByTagId({ id: tagId, offset: 0, limit: 4 }))
 
     if (isLoading) {
         return (
@@ -47,7 +44,7 @@ const MangaGrid: React.FC<MangaGridProps> = ({ title, tagId }) => {
             {/* Grid 2 cột */}
 
             <FlatList
-                data={mangas?.data.slice(0, 4)}
+                data={mangas?.data}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 columnWrapperStyle={styles.row}
