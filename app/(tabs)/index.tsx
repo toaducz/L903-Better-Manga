@@ -1,98 +1,76 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { useEffect, useState } from "react";
+import { StyleSheet, ScrollView, View } from "react-native";
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
+import GridManga from "@/components/manga/manga-grid";
+import SlideMangaCardFullWidth from "@/components/slider/manga-slider";
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const [showSecond, setShowSecond] = useState(false);
+  const [showThird, setShowThird] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  const oneshot = '0234a31e-a729-4e28-9d6a-3f87c4966b9e';
+  const romance = '423e2eae-a7a2-4a8b-ac03-a8351462d71d';
+  const comedy = '4d32cc48-9f00-4cca-9b5a-a839f0764984';
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setShowSecond(true), 1000);
+    const t2 = setTimeout(() => setShowThird(true), 2000);
+
+    const interval = setInterval(() => {
+      if (showSecond && showThird) {
+        setLoading(false);
+        clearInterval(interval);
+      }
+    }, 200);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearInterval(interval);
+    };
+  }, [showSecond, showThird]);
+
+  return (
+    <ScrollView style={{ flex: 1, backgroundColor: "#000000ff", paddingHorizontal: 4 }} contentContainerStyle={{ paddingBottom: 20 }}>
+      {/* Slider */}
+      <SlideMangaCardFullWidth id="home-slider" />
+
+      {/* <ThemedView style={styles.titleContainer}>
+        <ThemedText type="title"></ThemedText>
+      </ThemedView> */}
+
+      <View style={{
+        marginTop: 20,
+        padding: 8,
+        backgroundColor: '#111',   // nền cho cả nhóm grid
+        borderRadius: 12,
+      }}>
+        <GridManga title="Lãng mạn" tagId={[romance]} />
+        {showSecond && <GridManga title="Hài hước" tagId={[comedy]} />}
+        {showThird && <GridManga title="Oneshot" tagId={[oneshot]} />}
+      </View>
+
+      {loading && (
+        <ThemedView style={styles.loading}>
+          <ThemedText type="default">Đang tải...</ThemedText>
+        </ThemedView>
+      )}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 8,
+    marginVertical: 12,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  loading: {
+    alignItems: "center",
+    marginVertical: 20,
   },
 });
