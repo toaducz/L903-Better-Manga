@@ -47,7 +47,7 @@ const MangaGrid: React.FC<MangaGridProps> = ({ title, tagId }) => {
             {/* Grid 2 cột */}
 
             <FlatList
-                data={mangas?.data.slice(0, 6)}
+                data={mangas?.data.slice(0, 4)}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 columnWrapperStyle={styles.row}

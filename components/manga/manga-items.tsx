@@ -28,7 +28,7 @@ const MangaItem: React.FC<MangaCardProps> = ({ manga }) => {
 
   const handlePress = () => {
     if (manga.id.trim()) {
-    //   router.push(`/manga-detail/${manga.id.trim()}`);
+      router.push({ pathname: '/manga-detail', params: { id: manga.id.trim() } })
     }
   };
 
