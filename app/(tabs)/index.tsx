@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet, ScrollView, View } from "react-native";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import GridManga from "@/components/manga/manga-grid";
+import GridManga from "@/components/manga/manga-grid-by-tag-id";
 import SlideMangaCardFullWidth from "@/components/slider/manga-slider";
 
 export default function HomeScreen() {
@@ -13,7 +13,7 @@ export default function HomeScreen() {
   const oneshot = '0234a31e-a729-4e28-9d6a-3f87c4966b9e';
   const romance = '423e2eae-a7a2-4a8b-ac03-a8351462d71d';
   const comedy = '4d32cc48-9f00-4cca-9b5a-a839f0764984';
-  
+
   useEffect(() => {
     const t1 = setTimeout(() => setShowSecond(true), 1000);
     const t2 = setTimeout(() => setShowThird(true), 2000);
@@ -33,31 +33,33 @@ export default function HomeScreen() {
   }, [showSecond, showThird]);
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#000000ff", paddingHorizontal: 4 }} contentContainerStyle={{ paddingBottom: 20 }}>
-      {/* Slider */}
-      <SlideMangaCardFullWidth id="home-slider" />
+    <View style={{ flex: 1, backgroundColor: "#000000ff" }}>
+      <ScrollView style={{ flex: 1, backgroundColor: "#000000ff", paddingHorizontal: 4 }} contentContainerStyle={{ paddingBottom: 20 }}>
+        {/* Slider */}
+        <SlideMangaCardFullWidth id="home-slider" />
 
-      {/* <ThemedView style={styles.titleContainer}>
+        {/* <ThemedView style={styles.titleContainer}>
         <ThemedText type="title"></ThemedText>
       </ThemedView> */}
 
-      <View style={{
-        marginTop: 20,
-        padding: 8,
-        backgroundColor: '#111',   // nền cho cả nhóm grid
-        borderRadius: 12,
-      }}>
-        <GridManga title="Lãng mạn" tagId={[romance]} />
-        {showSecond && <GridManga title="Hài hước" tagId={[comedy]} />}
-        {showThird && <GridManga title="Oneshot" tagId={[oneshot]} />}
-      </View>
+        <View style={{
+          marginTop: 20,
+          padding: 8,
+          backgroundColor: '#111',   // nền cho cả nhóm grid
+          borderRadius: 12,
+        }}>
+          <GridManga title="Lãng mạn" tagId={[romance]} />
+          {showSecond && <GridManga title="Hài hước" tagId={[comedy]} />}
+          {showThird && <GridManga title="Oneshot" tagId={[oneshot]} />}
+        </View>
 
-      {loading && (
-        <ThemedView style={styles.loading}>
-          <ThemedText type="default">Đang tải...</ThemedText>
-        </ThemedView>
-      )}
-    </ScrollView>
+        {loading && (
+          <ThemedView style={styles.loading}>
+            <ThemedText type="default">Đang tải...</ThemedText>
+          </ThemedView>
+        )}
+      </ScrollView>
+    </View>
   );
 }
 

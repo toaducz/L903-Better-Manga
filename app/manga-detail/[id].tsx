@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { getMangaById } from '@/api/manga/get-detail-manga-by-id';
-import MangaDetailScreen from './screen/manga-detail-screen';
+import MangaDetailScreen from '../screen/manga-detail-screen';
 import Loading from '@/components/status/loading';
 import Error from '@/components/status/error';
 import { useLocalSearchParams } from 'expo-router';
@@ -36,14 +36,8 @@ function MangaDetailContent() {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor }]}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-        style={{ backgroundColor }}
-      >
-        <MangaDetailScreen manga={manga.data} />
-      </ScrollView>
+    <View style={[styles.container, { flex: 1, backgroundColor }]}>
+      <MangaDetailScreen manga={manga.data} />
     </View>
   );
 }

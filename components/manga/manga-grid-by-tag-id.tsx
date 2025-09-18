@@ -1,18 +1,50 @@
 import React from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
 import MangaItem from "@/components/manga/manga-items";
 import { Manga } from "@/api/paginate";
+import { getTopMangaByTagId } from "@/api/manga/get-manga-by-tag-id";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../status/loading";
+import Error from "../status/error";
 
 interface MangaGridProps {
-    mangas: Manga[]
+    title: string
+    tagId: string[];
 }
 
-const MangaGrid: React.FC<MangaGridProps> = ({ mangas }) => {
+const MangaGrid: React.FC<MangaGridProps> = ({ title, tagId }) => {
+
+    const { data: mangas, isLoading, isError, error } = useQuery(getTopMangaByTagId({ id: tagId, offset: 0, limit: 4 }))
+
+    if (isLoading) {
+        return (
+            < Loading />
+        )
+    }
+
+    if (isError || !mangas) {
+        console.log("API error:", error);
+        return (
+            < Error />
+        )
+    }
 
     return (
         <View style={styles.container}>
+            {/* Header */}
+            <View style={styles.headerRow}>
+                <Text style={styles.title}>{title}</Text>
+                <TouchableOpacity >
+                    {/* onPress={() => router.push(`/tag/${tagId}`)} */}
+                    <Text style={styles.seeMore}>Xem thêm</Text>
+                </TouchableOpacity>
+            </View>
+
+            {/* Grid 2 cột */}
+
             <FlatList
-                data={mangas}
+                data={mangas?.data}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 columnWrapperStyle={styles.row}

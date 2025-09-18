@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, ActivityIndicator, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import { Manga } from "@/api/paginate"; 
+import { Manga } from "@/api/paginate";
 
 interface MangaCardProps {
   manga: Manga;
@@ -28,7 +28,7 @@ const MangaItem: React.FC<MangaCardProps> = ({ manga }) => {
 
   const handlePress = () => {
     if (manga.id.trim()) {
-      router.push({ pathname: '/manga-detail', params: { id: manga.id.trim() } })
+      router.push(`/manga-detail/${manga.id}`);
     }
   };
 
@@ -68,7 +68,7 @@ const MangaItem: React.FC<MangaCardProps> = ({ manga }) => {
   );
 };
 
-export default MangaItem;
+export default React.memo(MangaItem);
 
 const styles = StyleSheet.create({
   card: {

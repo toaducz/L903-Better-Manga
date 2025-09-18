@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
@@ -16,7 +16,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarStyle: {
-          backgroundColor: '#1e2929ff', 
+          backgroundColor: '#1e2929ff',
         },
       }}
     >
@@ -36,8 +36,8 @@ export default function TabLayout() {
         name="search"
         options={{
           title: 'Tìm kiếm',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="a.magnify" color={color} />
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="magnify" color={color} size={size} />
           ),
         }}
       />

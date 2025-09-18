@@ -45,7 +45,7 @@ const SlideMangaCardFullWidth: React.FC<Props> = ({ id }) => {
 
           const handleClick = () => {
             if (manga.id.trim()) {
-              router.push({ pathname: '/manga-detail', params: { id: manga.id.trim() } })
+              router.push(`/manga-detail/${manga.id}`);
             }
           };
 
