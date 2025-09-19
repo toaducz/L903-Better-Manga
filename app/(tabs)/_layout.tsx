@@ -1,13 +1,13 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Tabs } from 'expo-router'
+import React from 'react'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { HapticTab } from '@/components/haptic-tab'
+import { IconSymbol } from '@/components/ui/icon-symbol'
+import { Colors } from '@/constants/theme'
+import { useColorScheme } from '@/hooks/use-color-scheme'
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme()
 
   return (
     <Tabs
@@ -16,64 +16,54 @@ export default function TabLayout() {
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarStyle: {
-          backgroundColor: '#1e2929ff',
-        },
+          backgroundColor: '#1e2929ff'
+        }
       }}
     >
       {/* Trang chủ */}
       <Tabs.Screen
-        name="index"
+        name='index'
         options={{
           title: 'Trang chủ',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name='house.fill' color={color} />
         }}
       />
 
       {/* Tìm kiếm */}
       <Tabs.Screen
-        name="search"
+        name='search'
         options={{
           title: 'Tìm kiếm',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="magnify" color={color} size={size} />
-          ),
+          tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name='magnify' color={color} size={size} />
         }}
       />
 
       {/* Thư viện */}
       <Tabs.Screen
-        name="library"
+        name='library'
         options={{
           title: 'Thư viện',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="books.vertical.fill" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name='books.vertical.fill' color={color} />
         }}
       />
 
       {/* Thông báo */}
       <Tabs.Screen
-        name="notifications"
+        name='notifications'
         options={{
           title: 'Thông báo',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="bell.fill" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name='bell.fill' color={color} />
         }}
       />
 
       {/* Tài khoản */}
       <Tabs.Screen
-        name="profile"
+        name='profile'
         options={{
           title: 'Tài khoản',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="person.fill" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name='person.fill' color={color} />
         }}
       />
     </Tabs>
-  );
+  )
 }

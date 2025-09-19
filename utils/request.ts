@@ -1,4 +1,4 @@
-const BASE_URL = "https://api.mangadex.org"
+const BASE_URL = 'https://api.mangadex.org'
 
 export async function request<T, P extends Record<string, unknown> = Record<string, unknown>>(
   endpoint: string,

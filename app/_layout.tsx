@@ -1,4 +1,4 @@
-import { DefaultTheme, ThemeProvider, DarkTheme } from '@react-navigation/native'
+import { ThemeProvider, DarkTheme } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
@@ -15,8 +15,6 @@ export default function RootLayout() {
   const queryClient = new QueryClient()
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf')
-
-
   })
 
   useEffect(() => {
@@ -37,7 +35,7 @@ export default function RootLayout() {
             <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
             <Stack.Screen name='+not-found' />
             <Stack.Screen
-              name="manga-detail/[id]"
+              name='manga-detail/[id]'
               options={{
                 // title: '',
                 // headerStyle: { backgroundColor: '#192d5aff' },
@@ -47,7 +45,7 @@ export default function RootLayout() {
               }}
             />
             <Stack.Screen
-              name="reader/[id]"
+              name='reader/[id]'
               options={{
                 headerShown: false
               }}

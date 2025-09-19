@@ -11,7 +11,7 @@ type TopMangaByTagIdRequest = {
 
 export const getTopMangaByTagId = ({
   id = [],
-  offset, 
+  offset,
   limit,
   publicationDemographic = 'none'
 }: TopMangaByTagIdRequest) => {

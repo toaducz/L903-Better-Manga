@@ -1,28 +1,22 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import { View, TextInput, StyleSheet, StatusBar, FlatList, Text, ActivityIndicator, Image } from 'react-native';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { request } from '@/utils/request';
-import { Manga, DataResponse } from '@/api/paginate';
-import MangaItem from '@/components/manga/manga-items';
+import React, { useState, useMemo, useCallback } from 'react'
+import { View, TextInput, StyleSheet, StatusBar, FlatList, Text, ActivityIndicator, Image } from 'react-native'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { request } from '@/utils/request'
+import { Manga, DataResponse } from '@/api/paginate'
+import MangaItem from '@/components/manga/manga-items'
 
 export default function SearchScreen() {
-  const [searchText, setSearchText] = useState('');
-  const [submittedSearchText, setSubmittedSearchText] = useState('');
-  const limit = 20;
+  const [searchText, setSearchText] = useState('')
+  const [submittedSearchText, setSubmittedSearchText] = useState('')
+  const limit = 20
 
   const handleSubmitSearch = () => {
-    const trimmedText = searchText.trim();
-    setSubmittedSearchText(trimmedText);
-  };
+    const trimmedText = searchText.trim()
+    setSubmittedSearchText(trimmedText)
+  }
 
   // Infinite query cho search
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
     queryKey: ['search-infinite', submittedSearchText],
     queryFn: ({ pageParam = 0 }): Promise<DataResponse<Manga>> => {
       if (!submittedSearchText) {
@@ -31,7 +25,7 @@ export default function SearchScreen() {
           limit: limit,
           offset: 0,
           total: 0
-        } as unknown as DataResponse<Manga>);
+        } as unknown as DataResponse<Manga>)
       }
 
       return request<DataResponse<Manga>>(`manga/`, 'GET', {
@@ -41,38 +35,38 @@ export default function SearchScreen() {
         'availableTranslatedLanguage[]': 'en',
         'includes[]': 'cover_art',
         offset: pageParam
-      });
+      })
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      const totalLoaded = allPages.length * limit;
-      return totalLoaded < lastPage.total ? totalLoaded : undefined;
+      const totalLoaded = allPages.length * limit
+      return totalLoaded < lastPage.total ? totalLoaded : undefined
     },
-    enabled: submittedSearchText.length > 0, // Chỉ chạy query khi có search text
-  });
+    enabled: submittedSearchText.length > 0 // Chỉ chạy query khi có search text
+  })
 
   // Flatten data từ tất cả các pages
   const mangas = useMemo(() => {
-    return data?.pages.flatMap(page => page.data) ?? [];
-  }, [data]);
+    return data?.pages.flatMap(page => page.data) ?? []
+  }, [data])
 
   // Total count từ page đầu tiên
-  const totalCount = data?.pages[0]?.total ?? 0;
+  const totalCount = data?.pages[0]?.total ?? 0
 
   const handleLoadMore = () => {
     if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
+      fetchNextPage()
     }
-  };
+  }
 
   const renderFooter = () => {
     if (isFetchingNextPage) {
       return (
         <View style={styles.loadingFooter}>
-          <ActivityIndicator size="large" color="#60a5fa" />
+          <ActivityIndicator size='large' color='#60a5fa' />
           <Text style={styles.loadingText}>Đang tải thêm...</Text>
         </View>
-      );
+      )
     }
 
     if (!hasNextPage && mangas.length > 0) {
@@ -80,55 +74,54 @@ export default function SearchScreen() {
         <View style={styles.endFooter}>
           <Text style={styles.endText}>Đã hiển thị tất cả kết quả</Text>
         </View>
-      );
+      )
     }
 
-    return null;
-  };
+    return null
+  }
 
-  const renderItem = useCallback(({ item }: { item: Manga }) => (
-    <View style={styles.gridItem}>
-      <MangaItem manga={item} />
-    </View>
-  ), []);
+  const renderItem = useCallback(
+    ({ item }: { item: Manga }) => (
+      <View style={styles.gridItem}>
+        <MangaItem manga={item} />
+      </View>
+    ),
+    []
+  )
 
   const renderEmptyComponent = () => {
     if (isLoading) {
       return (
         <View style={styles.emptyContainer}>
-          <ActivityIndicator size="large" color="#60a5fa" />
+          <ActivityIndicator size='large' color='#60a5fa' />
           <Text style={styles.emptyText}>Đang tìm kiếm...</Text>
         </View>
-      );
+      )
     }
 
-    if (!isLoading && mangas.length === 0 && submittedSearchText !== "") {
+    if (!isLoading && mangas.length === 0 && submittedSearchText !== '') {
       return (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>
-            Không tìm thấy manga nào với từ khóa "{submittedSearchText}"
-          </Text>
+          <Text style={styles.emptyText}>Không tìm thấy manga nào với từ khóa "{submittedSearchText}"</Text>
         </View>
-      );
+      )
     }
 
     if (!submittedSearchText) {
       return (
         <View style={styles.emptyContainer}>
           <Image
-            source={require("@/assets/dantsu-flame-umamusume.png")}
+            source={require('@/assets/dantsu-flame-umamusume.png')}
             style={styles.emptyImage}
-            resizeMode="contain"
+            resizeMode='contain'
           />
-          <Text style={styles.emptyText}>
-            Ở đây trống trải quá, thử tìm gì đó xem!
-          </Text>
+          <Text style={styles.emptyText}>Ở đây trống trải quá, thử tìm gì đó xem!</Text>
         </View>
-      );
+      )
     }
 
-    return null;
-  };
+    return null
+  }
 
   return (
     <View style={styles.container}>
@@ -137,10 +130,10 @@ export default function SearchScreen() {
           value={searchText}
           onChangeText={setSearchText}
           onSubmitEditing={handleSubmitSearch}
-          placeholder="Tìm kiếm..."
-          placeholderTextColor="#888"
+          placeholder='Tìm kiếm...'
+          placeholderTextColor='#888'
           style={styles.searchInput}
-          returnKeyType="search"
+          returnKeyType='search'
         />
       </View>
 
@@ -154,7 +147,7 @@ export default function SearchScreen() {
 
         <FlatList
           data={mangas}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={item => item.id.toString()}
           numColumns={2}
           columnWrapperStyle={mangas.length > 0 ? styles.row : undefined}
           renderItem={renderItem}
@@ -170,19 +163,19 @@ export default function SearchScreen() {
         />
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0f172a',
-    paddingTop: StatusBar.currentHeight || 24,
+    paddingTop: StatusBar.currentHeight || 24
   },
   searchContainer: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: '#1e293b',
+    backgroundColor: '#1e293b'
   },
   searchInput: {
     height: 40,
@@ -190,24 +183,24 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 12,
     color: '#fff',
-    fontSize: 16,
+    fontSize: 16
   },
   content: {
     flex: 1,
-    padding: 16,
+    padding: 16
   },
   resultCount: {
     color: '#9ca3af',
     fontSize: 14,
     marginBottom: 16,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   row: {
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   gridItem: {
     flex: 1,
-    margin: 4,
+    margin: 4
   },
   loadingFooter: {
     paddingVertical: 30,
@@ -216,40 +209,40 @@ const styles = StyleSheet.create({
     backgroundColor: '#1e293b',
     marginTop: 10,
     borderRadius: 8,
-    marginHorizontal: 4,
+    marginHorizontal: 4
   },
   loadingText: {
     color: '#e5e7eb',
     marginTop: 12,
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: '500'
   },
   endFooter: {
     paddingVertical: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10,
+    marginTop: 10
   },
   endText: {
     color: '#6b7280',
     fontSize: 14,
-    fontStyle: 'italic',
+    fontStyle: 'italic'
   },
   emptyContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 150,
+    paddingVertical: 150
   },
   emptyText: {
     color: '#9ca3af',
     fontSize: 16,
     textAlign: 'center',
-    marginTop: 12,
+    marginTop: 12
   },
   emptyImage: {
     width: 200,
     height: 200,
-    marginBottom: 16, 
-  },
-});
+    marginBottom: 16
+  }
+})
