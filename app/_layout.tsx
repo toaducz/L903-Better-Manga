@@ -46,6 +46,12 @@ export default function RootLayout() {
                 headerShown: false
               }}
             />
+            <Stack.Screen
+              name="reader/[id]"
+              options={{
+                headerShown: false
+              }}
+            />
             {/* <Stack.Screen name='anime-search-result' options={{ title: 'Kết quả tìm kiếm' }} /> */}
           </Stack>
           <StatusBar style='auto' />

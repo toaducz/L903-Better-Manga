@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { View, TextInput, StyleSheet, StatusBar, FlatList, Text, ActivityIndicator } from 'react-native';
+import { View, TextInput, StyleSheet, StatusBar, FlatList, Text, ActivityIndicator, Image } from 'react-native';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { request } from '@/utils/request';
 import { Manga, DataResponse } from '@/api/paginate';
@@ -115,8 +115,13 @@ export default function SearchScreen() {
     if (!submittedSearchText) {
       return (
         <View style={styles.emptyContainer}>
+          <Image
+            source={require("@/assets/dantsu-flame-umamusume.png")}
+            style={styles.emptyImage}
+            resizeMode="contain"
+          />
           <Text style={styles.emptyText}>
-            Thử tìm gì đó xem!
+            Ở đây trống trải quá, thử tìm gì đó xem!
           </Text>
         </View>
       );
@@ -234,12 +239,17 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 50,
+    paddingVertical: 150,
   },
   emptyText: {
     color: '#9ca3af',
     fontSize: 16,
     textAlign: 'center',
     marginTop: 12,
+  },
+  emptyImage: {
+    width: 200,
+    height: 200,
+    marginBottom: 16, 
   },
 });

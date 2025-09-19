@@ -110,7 +110,7 @@ const MangaChaptersList: React.FC<MangaChaptersListProps> = ({
                 </View>
             );
         }
-        
+
         return null;
     };
 
@@ -124,7 +124,7 @@ const MangaChaptersList: React.FC<MangaChaptersListProps> = ({
                 <Picker
                     selectedValue={sortOrder}
                     onValueChange={handleSortChange}
-                    style={[styles.picker, {height: 'auto'}]}
+                    style={[styles.picker, { height: 'auto' }]}
                     dropdownIconColor="#fff"
                 >
                     <Picker.Item label="Cũ nhất" value="asc" />
@@ -134,7 +134,7 @@ const MangaChaptersList: React.FC<MangaChaptersListProps> = ({
                 <Picker
                     selectedValue={lang}
                     onValueChange={handleLangChange}
-                    style={[styles.picker, {height: 'auto'}]}
+                    style={[styles.picker, { height: 'auto' }]}
                     dropdownIconColor="#fff"
                 >
                     <Picker.Item label="Tất cả ngôn ngữ" value="all" />
@@ -163,18 +163,12 @@ const MangaChaptersList: React.FC<MangaChaptersListProps> = ({
                                 styles.chapterItem,
                                 item.id === chapterId ? styles.activeItem : styles.inactiveItem,
                             ]}
-                            // onPress={() =>
-                            //     router.push({
-                            //         pathname: "/reader/[id]",
-                            //         params: {
-                            //             id: item.id,
-                            //             mangaId,
-                            //             number: item.attributes.chapter,
-                            //             lang: getLanguageName(item.attributes.translatedLanguage),
-                            //             order: sortOrder,
-                            //         },
-                            //     })
-                            // }
+                            onPress={() => {
+                                if (item.id.trim()) {
+                                    router.push(`/reader/${item.id}`);
+                                }
+                            }
+                            }
                         >
                             <View style={styles.row}>
                                 <Text style={styles.chapterText}>
