@@ -9,8 +9,8 @@ const { width } = Dimensions.get('window')
 
 interface ChapterReaderScreenProps {
   chapterDetail: ChapterDetail
-  mangaId: String
-  currentChapter: String
+  mangaId: string
+  currentChapter: string
 }
 
 const ChapterReaderScreen: React.FC<ChapterReaderScreenProps> = ({ chapterDetail, mangaId, currentChapter }) => {
