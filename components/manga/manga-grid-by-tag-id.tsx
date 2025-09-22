@@ -1,8 +1,6 @@
 import React from 'react'
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
-import { useRouter } from 'expo-router'
 import MangaItem from '@/components/manga/manga-items'
-import { Manga } from '@/api/paginate'
 import { getTopMangaByTagId } from '@/api/manga/get-manga-by-tag-id'
 import { useQuery } from '@tanstack/react-query'
 import Loading from '../status/loading'
@@ -13,7 +11,7 @@ interface MangaGridProps {
   tagId: string[]
 }
 
-const MangaGrid: React.FC<MangaGridProps> = ({ title, tagId }) => {
+const MangaGridByTagId: React.FC<MangaGridProps> = ({ title, tagId }) => {
   const { data: mangas, isLoading, isError, error } = useQuery(getTopMangaByTagId({ id: tagId, offset: 0, limit: 4 }))
 
   if (isLoading) {
@@ -54,7 +52,7 @@ const MangaGrid: React.FC<MangaGridProps> = ({ title, tagId }) => {
   )
 }
 
-export default MangaGrid
+export default MangaGridByTagId
 
 const styles = StyleSheet.create({
   container: {

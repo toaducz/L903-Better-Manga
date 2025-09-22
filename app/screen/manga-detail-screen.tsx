@@ -1,15 +1,10 @@
 import React, { useState } from 'react'
-import { ScrollView, View, Text, Image, TouchableOpacity, Dimensions } from 'react-native'
-import { useQuery } from '@tanstack/react-query'
+import { ScrollView, View, Text, Image, TouchableOpacity, SafeAreaViewBase } from 'react-native'
 import { Manga } from '@/api/paginate'
-// import MangaChaptersList from '@/component/manga/manga-chapter-list';
-// import RelatedManga from '@/component/manga/related-manga';
-import Loading from '@/components/status/loading'
-import Error from '@/components/status/error'
 // import { getAuthorById } from '@/api/Author/getAuthorById';
 import { MangaStatus, OriginalLanguage, ContentRating } from '@/utils/enums'
-import { getChaptersByMangaId } from '@/api/chapter/get-chapter-by-id'
 import MangaChaptersList from '@/components/tabs/manga-chapter-tab'
+import RelatedManga from '@/components/manga/manga-related'
 
 interface MangaDetailPageProps {
   manga: Manga
@@ -26,7 +21,7 @@ export default function MangaDetailScreen({ manga }: MangaDetailPageProps) {
   const coverArt = manga.relationships.find(rel => rel.type === 'cover_art')
   const coverArtFileName = coverArt?.attributes?.fileName
   const coverImageUrl = coverArtFileName ? `https://uploads.mangadex.org/covers/${manga.id}/${coverArtFileName}` : ''
-
+  const relatedMangaIds = manga.relationships.filter(rel => rel.type === 'manga').map(rel => rel.id)
   // const authorId = manga.relationships.find(item => item.type === 'author')?.id;
   //   const { data: author, isLoading, isError } = useQuery(getAuthorById({ id: authorId! }));
   //   if (isLoading) return <Loading />;
@@ -94,7 +89,7 @@ export default function MangaDetailScreen({ manga }: MangaDetailPageProps) {
         {/* Tab Content */}
         <View style={{ paddingHorizontal: 16, paddingBottom: 32 }}>
           {activeTab === 'chapters' && <MangaChaptersList mangaId={manga.id} langValue='vi' langFilterValue={['vi']} />}
-          {/* {activeTab === 'related' && <RelatedManga ids={manga.relationships.filter(r => r.type === 'manga').map(r => r.id)} />} */}
+          {activeTab === 'related' && <RelatedManga ids={relatedMangaIds} />}
         </View>
       </ScrollView>
     </View>

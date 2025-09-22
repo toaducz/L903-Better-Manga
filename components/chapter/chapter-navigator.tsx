@@ -1,13 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Modal,
-  FlatList,
-  ActivityIndicator
-} from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Modal, FlatList, ActivityIndicator } from 'react-native'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { request } from '@/utils/request'
 import { DataResponse } from '@/api/paginate'
@@ -24,24 +16,13 @@ interface ChapterFooterProps {
   langFilter?: string[]
 }
 
-const ChapterNavigator: React.FC<ChapterFooterProps> = ({
-  mangaId,
-  currentChapterId,
-  langFilter = ['vi']
-}) => {
+const ChapterNavigator: React.FC<ChapterFooterProps> = ({ mangaId, currentChapterId, langFilter = ['vi'] }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState<string[]>(langFilter)
-  const limit = 1000
+  const limit = 500
   const router = useRouter()
-  
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    isError
-  } = useInfiniteQuery({
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } = useInfiniteQuery({
     queryKey: ['chapters-footer', mangaId, selectedFilter],
     queryFn: ({ pageParam = 0 }) =>
       request<DataResponse<Chapter>>(`/manga/${mangaId}/feed`, 'GET', {
@@ -54,24 +35,19 @@ const ChapterNavigator: React.FC<ChapterFooterProps> = ({
     getNextPageParam: (lastPage, allPages) => {
       const totalLoaded = allPages.length * limit
       return totalLoaded < lastPage.total ? totalLoaded : undefined
-    }
+    },
+    staleTime: 1000 * 60 * 30
   })
 
-  const chapters = useMemo(
-    () => data?.pages.flatMap(page => page.data) ?? [],
-    [data]
-  )
+  const chapters = useMemo(() => data?.pages.flatMap(page => page.data) ?? [], [data])
 
-  const currentIndex = useMemo(
-    () => chapters.findIndex(c => c.id === currentChapterId),
-    [chapters, currentChapterId]
-  )
+  const currentIndex = useMemo(() => chapters.findIndex(c => c.id === currentChapterId), [chapters, currentChapterId])
 
-  const currentChapter = chapters.find(c => c.id === currentChapterId);
+  const currentChapter = chapters.find(c => c.id === currentChapterId)
 
   const currentLabel = currentChapter?.attributes.chapter
-  ? `Chapter ${currentChapter.attributes.chapter}`
-  : "Danh sách Chapter";
+    ? `Chapter ${currentChapter.attributes.chapter}`
+    : 'Danh sách Chapter'
 
   const filterOptions = [
     { label: 'Mặc định', value: ['vi', 'en', 'ja'] },
@@ -96,20 +72,11 @@ const ChapterNavigator: React.FC<ChapterFooterProps> = ({
           }
         }}
       >
-        <Ionicons
-          name="arrow-back"
-          size={20}
-          color={currentIndex <= 0 ? '#666' : '#fff'}
-        />
-
+        <Ionicons name='arrow-back' size={20} color={currentIndex <= 0 ? '#666' : '#fff'} />
       </TouchableOpacity>
 
       {/* Mở Modal danh sách */}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => setModalVisible(true)}
-        activeOpacity={0.5}
-      >
+      <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)} activeOpacity={0.5}>
         <Text style={styles.text}>{currentLabel}</Text>
       </TouchableOpacity>
 
@@ -128,23 +95,14 @@ const ChapterNavigator: React.FC<ChapterFooterProps> = ({
         }}
       >
         <Ionicons
-          name="arrow-forward"
+          name='arrow-forward'
           size={20}
-          color={
-            currentIndex < 0 || currentIndex >= chapters.length - 1
-              ? '#666'
-              : '#fff'
-          }
+          color={currentIndex < 0 || currentIndex >= chapters.length - 1 ? '#666' : '#fff'}
         />
       </TouchableOpacity>
 
       {/* Modal danh sách */}
-      <Modal
-        visible={modalVisible}
-        transparent
-        animationType='slide'
-        onRequestClose={() => setModalVisible(false)}
-      >
+      <Modal visible={modalVisible} transparent animationType='slide' onRequestClose={() => setModalVisible(false)}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             {/* Filter Tabs */}
@@ -154,8 +112,7 @@ const ChapterNavigator: React.FC<ChapterFooterProps> = ({
                   key={opt.label}
                   style={[
                     styles.filterButton,
-                    selectedFilter.toString() === opt.value.toString() &&
-                    styles.filterButtonActive
+                    selectedFilter.toString() === opt.value.toString() && styles.filterButtonActive
                   ]}
                   onPress={() => setSelectedFilter(opt.value)}
                 >
@@ -165,9 +122,7 @@ const ChapterNavigator: React.FC<ChapterFooterProps> = ({
             </View>
 
             {isLoading ? (
-              <View
-                style={{ justifyContent: 'center', alignItems: 'center', marginTop: 250 }}
-              >
+              <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 250 }}>
                 <Loading />
               </View>
             ) : isError || !mangaId ? (
@@ -189,10 +144,7 @@ const ChapterNavigator: React.FC<ChapterFooterProps> = ({
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => (
                   <TouchableOpacity
-                    style={[
-                      styles.chapterItem,
-                      item.id === currentChapterId && styles.activeItem
-                    ]}
+                    style={[styles.chapterItem, item.id === currentChapterId && styles.activeItem]}
                     onPress={() => {
                       setModalVisible(false)
                       router.replace({
@@ -201,12 +153,8 @@ const ChapterNavigator: React.FC<ChapterFooterProps> = ({
                       })
                     }}
                   >
-                    <Text style={styles.chapterText}>
-                      Chapter {item.attributes.chapter ?? 'Oneshot'}
-                    </Text>
-                    <Text style={styles.date}>
-                      {formatDate(item.attributes.updatedAt)}
-                    </Text>
+                    <Text style={styles.chapterText}>Chapter {item.attributes.chapter ?? 'Oneshot'}</Text>
+                    <Text style={styles.date}>{formatDate(item.attributes.updatedAt)}</Text>
                   </TouchableOpacity>
                 )}
                 onEndReached={() => {
@@ -215,11 +163,7 @@ const ChapterNavigator: React.FC<ChapterFooterProps> = ({
                 onEndReachedThreshold={0.3}
                 ListFooterComponent={
                   isFetchingNextPage ? (
-                    <ActivityIndicator
-                      size='small'
-                      color='#60a5fa'
-                      style={{ marginVertical: 12 }}
-                    />
+                    <ActivityIndicator size='small' color='#60a5fa' style={{ marginVertical: 12 }} />
                   ) : null
                 }
               />

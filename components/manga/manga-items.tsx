@@ -75,8 +75,10 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   imageLarge: {
-    width: 200,
-    height: 250
+    width: '100%',
+    height: 250,
+    maxWidth: 200,
+    alignSelf: 'center'
   },
   loadingOverlay: {
     ...StyleSheet.absoluteFillObject,

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { StyleSheet, ScrollView, View } from 'react-native'
 import { ThemedText } from '@/components/themed-text'
 import { ThemedView } from '@/components/themed-view'
-import GridManga from '@/components/manga/manga-grid-by-tag-id'
+import MangaGridByTagId from '@/components/manga/manga-grid-by-tag-id'
 import SlideMangaCardFullWidth from '@/components/slider/manga-slider'
 
 export default function HomeScreen() {
@@ -41,10 +41,6 @@ export default function HomeScreen() {
         {/* Slider */}
         <SlideMangaCardFullWidth id='home-slider' />
 
-        {/* <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title"></ThemedText>
-      </ThemedView> */}
-
         <View
           style={{
             marginTop: 20,
@@ -53,9 +49,9 @@ export default function HomeScreen() {
             borderRadius: 12
           }}
         >
-          <GridManga title='Lãng mạn' tagId={[romance]} />
-          {showSecond && <GridManga title='Hài hước' tagId={[comedy]} />}
-          {showThird && <GridManga title='Oneshot' tagId={[oneshot]} />}
+          <MangaGridByTagId title='Lãng mạn' tagId={[romance]} />
+          {showSecond && <MangaGridByTagId title='Hài hước' tagId={[comedy]} />}
+          {showThird && <MangaGridByTagId title='Oneshot' tagId={[oneshot]} />}
         </View>
 
         {loading && (
