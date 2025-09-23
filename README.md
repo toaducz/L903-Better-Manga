@@ -6,15 +6,17 @@
 
 ## Demo
 
-![Demo 1](assets/demo/demo_1.jpg)  
-![Demo 2](assets/demo/demo_2.jpg)  
-![Demo 3](assets/demo/demo_3.jpg)  
-![Demo 4](assets/demo/demo_4.jpg)
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+  <img src="assets/demo/demo_1.jpg" width="300" />
+  <img src="assets/demo/demo_2.jpg" width="300" />
+  <img src="assets/demo/demo_3.jpg" width="300" />
+  <img src="assets/demo/demo_4.jpg" width="300" />
+</div>
 
 ---
 
 ## Tính năng nổi bật
 
-- Không có gì, thua cả web dù web lỏ
+- Không có gì, thua cả web dù web đã rất lỏ
 
 ---
