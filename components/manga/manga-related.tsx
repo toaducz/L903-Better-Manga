@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, StyleSheet, ToastAndroid, Platform, Activ
 import { useQueries } from '@tanstack/react-query'
 import { getMangaById } from '@/api/manga/get-detail-manga-by-id'
 import { Manga } from '@/api/paginate'
-import MangaItem from './manga-items'
 import { Picker } from '@react-native-picker/picker' // chọn filter
 import Error from '../status/error'
 import MangaGrid from './manga-grid'
@@ -91,7 +90,7 @@ export default function RelatedManga({ ids }: RelatedMangaProps) {
           style={styles.picker}
           enabled={pickerEnable}
         >
-          <Picker.Item label='Hiện tất cả' value='all' />
+          <Picker.Item label='Hiện tất cả (Nguy hiểm)' value='all' />
           <Picker.Item label='Mặc định' value='hide-pornographic' />
         </Picker>
       </TouchableOpacity>

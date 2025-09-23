@@ -66,7 +66,7 @@ const TagListScreen = () => {
             <TouchableOpacity
               style={styles.tagItem}
               onPress={() => {
-                router.replace({
+                router.push({
                   pathname: `/tag/[id]`,
                   params: { id: item.id }
                 })

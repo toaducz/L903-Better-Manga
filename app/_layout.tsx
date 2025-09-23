@@ -53,7 +53,7 @@ export default function RootLayout() {
             <Stack.Screen
               name='tag/[id]'
               options={{
-                title: 'Tìm kiếm nâng cao',
+                headerTitle: 'Tìm kiếm nâng cao',
                 headerStyle: { backgroundColor: '#192d5aff' },
                 headerTintColor: '#fff', // màu icon back
                 headerTitleStyle: { fontWeight: 'bold', fontSize: 18 }
