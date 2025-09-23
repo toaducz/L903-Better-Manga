@@ -1,11 +1,12 @@
 import React, { useState, useMemo } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, ToastAndroid, Platform, ActivityIndicator } from 'react-native'
 import { useQueries } from '@tanstack/react-query'
 import { getMangaById } from '@/api/manga/get-detail-manga-by-id'
 import { Manga } from '@/api/paginate'
 import MangaItem from './manga-items'
 import { Picker } from '@react-native-picker/picker' // chọn filter
 import Error from '../status/error'
+import MangaGrid from './manga-grid'
 
 type RelatedMangaProps = {
   ids: string[]
@@ -15,7 +16,7 @@ export default function RelatedManga({ ids }: RelatedMangaProps) {
   const pageSize = 10
   const [page, setPage] = useState(0)
   const [selectedRating, setSelectedRating] = useState<'all' | 'hide-pornographic'>('hide-pornographic')
-
+  const pickerEnable = true
   const totalPages = Math.ceil(ids.length / pageSize)
 
   const currentIds = useMemo(() => {
@@ -28,15 +29,26 @@ export default function RelatedManga({ ids }: RelatedMangaProps) {
 
   const isLoading = mangaQueries.some(query => query.isLoading)
   const isError = mangaQueries.some(query => query.isError)
-  const errors = mangaQueries.map(query => query.error).filter(Boolean) // debug
+  // debug
+  const errors = mangaQueries.map(query => query.error).filter(Boolean)
 
   const mangaList = mangaQueries.filter(query => query.data).map(query => query.data!.data as Manga)
 
-  const displayedManga = mangaList.filter(manga => {
-    if (!manga || !manga.attributes) return false
-    if (selectedRating === 'all') return true
-    return manga.attributes.contentRating !== 'pornographic'
-  })
+  const displayedManga = (() => {
+    const list = mangaList.filter(manga => {
+      if (!manga || !manga.attributes) return false
+      if (selectedRating === 'all') return true
+      return manga.attributes.contentRating !== 'pornographic'
+    })
+
+    // Nếu lẻ thì push thêm placeholder cho đỡ bẩn mắt
+    if (list.length % 2 !== 0) {
+      list.push({ id: 'placeholder' } as any)
+      // console.log(list)
+    }
+
+    return list
+  })()
 
   if (currentIds.length === 0) {
     return (
@@ -65,24 +77,26 @@ export default function RelatedManga({ ids }: RelatedMangaProps) {
 
   return (
     <View style={styles.container}>
-      <Picker selectedValue={selectedRating} onValueChange={value => setSelectedRating(value)} style={styles.picker}>
-        <Picker.Item label='Hiện tất cả' value='all' />
-        <Picker.Item label='Mặc định' value='hide-pornographic' />
-      </Picker>
-
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => {
+          if (Platform.OS === 'android' && !pickerEnable) {
+            ToastAndroid.show('Picker bị khóa! Hẹ hẹ', ToastAndroid.SHORT)
+          }
+        }}
+      >
+        <Picker
+          selectedValue={selectedRating}
+          onValueChange={value => setSelectedRating(value)}
+          style={styles.picker}
+          enabled={pickerEnable}
+        >
+          <Picker.Item label='Hiện tất cả' value='all' />
+          <Picker.Item label='Mặc định' value='hide-pornographic' />
+        </Picker>
+      </TouchableOpacity>
       {displayedManga.length > 0 ? (
-        <FlatList
-          scrollEnabled={false}
-          data={displayedManga}
-          keyExtractor={(item, index) => item.id || index.toString()}
-          numColumns={2}
-          contentContainerStyle={styles.grid}
-          renderItem={({ item }) => (
-            <View style={styles.itemWrapper}>
-              <MangaItem manga={item} />
-            </View>
-          )}
-        />
+        <MangaGrid mangas={displayedManga} />
       ) : (
         <View style={styles.center}>
           <Text style={styles.emptyText}>Không có manga phù hợp</Text>
@@ -118,7 +132,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 10 },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
   emptyText: { color: 'gray', fontSize: 16 },
-  picker: { backgroundColor: '#333', color: 'white', marginBottom: 10 },
+  picker: { backgroundColor: '#333', color: 'white', marginBottom: 10, borderRadius: 16 },
   grid: { gap: 10 },
   itemWrapper: {
     flex: 1,
@@ -126,8 +140,21 @@ const styles = StyleSheet.create({
     minHeight: 140,
     maxHeight: 450
   },
-  pagination: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10, paddingHorizontal: 10, paddingBottom: 20 },
-  button: { backgroundColor: '#0011adff', paddingVertical: 8, paddingHorizontal: 16, borderRadius: 6, marginHorizontal: 12 },
+  pagination: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    paddingHorizontal: 10,
+    paddingBottom: 20
+  },
+  button: {
+    backgroundColor: '#0011adff',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    marginHorizontal: 12
+  },
   disabled: { opacity: 0.5 },
   buttonText: { color: 'white' },
   pageText: { color: 'white' }

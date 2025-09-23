@@ -43,12 +43,11 @@ export default function TabLayout() {
         name='library'
         options={{
           title: 'Thư viện',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name='books.vertical.fill' color={color} />
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons size={28} name='notebook-outline' color={color} />
         }}
       />
 
-      {/* Thông báo */}
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name='notifications'
         options={{
           title: 'Thông báo',
@@ -56,14 +55,13 @@ export default function TabLayout() {
         }}
       />
 
-      {/* Tài khoản */}
-      <Tabs.Screen
+      <Tabs.Screen 
         name='profile'
         options={{
           title: 'Tài khoản',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name='person.fill' color={color} />
         }}
-      />
+      /> */}
     </Tabs>
   )
 }

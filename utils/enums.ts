@@ -16,6 +16,7 @@ export enum PublicationDemographic {
 
 // Xếp hạng nội dung
 export enum ContentRating {
+  all = 'Tất cả',
   safe = 'Phù hợp với mọi lứa tuổi',
   suggestive = 'Có tính gợi dục',
   erotica = 'Ecchi',

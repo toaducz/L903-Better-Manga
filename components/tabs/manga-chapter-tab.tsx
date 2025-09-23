@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, FlatList, StyleSheet, Animated, ActivityI
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { Picker } from '@react-native-picker/picker'
 import { useRouter } from 'expo-router'
-// import { getChaptersByMangaId } from "@/api/chapter/get-chapter-by-id";
 import Loading from '../status/loading'
 import Error from '../status/error'
 import { getLanguageName } from '@/utils/enums'
@@ -35,6 +34,7 @@ const MangaChaptersList: React.FC<MangaChaptersListProps> = ({
   const [sortOrder, setSortOrder] = useState(order ?? 'asc')
   const [lang, setLang] = useState<string>(langValue ?? 'all')
   const [langFilter, setLangFilter] = useState(langFilterValue ?? ['vi', 'en', 'ja'])
+  const keyTemp = sortOrder + lang + langFilter
   const fadeAnim = useState(new Animated.Value(0))[0]
 
   // Sử dụng useInfiniteQuery thay vì useQuery
@@ -144,7 +144,7 @@ const MangaChaptersList: React.FC<MangaChaptersListProps> = ({
       ) : (
         <FlatList
           data={chapters}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.id + keyTemp}
           onEndReached={handleLoadMore}
           scrollEnabled={false}
           onEndReachedThreshold={0.3}

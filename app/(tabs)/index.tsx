@@ -49,9 +49,9 @@ export default function HomeScreen() {
             borderRadius: 12
           }}
         >
-          <MangaGridByTagId title='Lãng mạn' tagId={[romance]} />
-          {showSecond && <MangaGridByTagId title='Hài hước' tagId={[comedy]} />}
-          {showThird && <MangaGridByTagId title='Oneshot' tagId={[oneshot]} />}
+          <MangaGridByTagId title='Lãng mạn' tagId={[romance]} limit={4} />
+          {showSecond && <MangaGridByTagId title='Hài hước' tagId={[comedy]} limit={4} />}
+          {showThird && <MangaGridByTagId title='Oneshot' tagId={[oneshot]} limit={4} />}
         </View>
 
         {loading && (

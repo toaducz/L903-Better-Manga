@@ -5,14 +5,22 @@ import { getTopMangaByTagId } from '@/api/manga/get-manga-by-tag-id'
 import { useQuery } from '@tanstack/react-query'
 import Loading from '../status/loading'
 import Error from '../status/error'
+import { useRouter } from 'expo-router'
 
 interface MangaGridProps {
-  title: string
+  title?: string
   tagId: string[]
+  limit: number
 }
 
-const MangaGridByTagId: React.FC<MangaGridProps> = ({ title, tagId }) => {
-  const { data: mangas, isLoading, isError, error } = useQuery(getTopMangaByTagId({ id: tagId, offset: 0, limit: 4 }))
+const MangaGridByTagId: React.FC<MangaGridProps> = ({ title, tagId, limit = 10 }) => {
+  const router = useRouter()
+  const {
+    data: mangas,
+    isLoading,
+    isError,
+    error
+  } = useQuery(getTopMangaByTagId({ id: tagId, offset: 0, limit: limit }))
 
   if (isLoading) {
     return <Loading />
@@ -23,16 +31,31 @@ const MangaGridByTagId: React.FC<MangaGridProps> = ({ title, tagId }) => {
     return <Error />
   }
 
+  let data = mangas?.data ? [...mangas.data] : []
+
+  // Nếu số item lẻ → thêm placeholder nhìn cho đỡ bẩn mắt
+  if (data.length % 2 !== 0) {
+    data.push({ id: 'placeholder' } as any)
+  }
+
   return (
     <View style={styles.container}>
       {/* Header */}
-      <View style={styles.headerRow}>
-        <Text style={styles.title}>{title}</Text>
-        <TouchableOpacity>
-          {/* onPress={() => router.push(`/tag/${tagId}`)} */}
-          <Text style={styles.seeMore}>Xem thêm</Text>
-        </TouchableOpacity>
-      </View>
+      {title ? (
+        <View style={styles.headerRow}>
+          <Text style={styles.title}>{title}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              router.push({
+                pathname: `/tag/[id]`,
+                params: { id: tagId[0] }
+              })
+            }}
+          >
+            <Text style={styles.seeMore}>Xem thêm</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
 
       {/* Grid 2 cột */}
 
@@ -41,11 +64,16 @@ const MangaGridByTagId: React.FC<MangaGridProps> = ({ title, tagId }) => {
         keyExtractor={item => item.id.toString()}
         numColumns={2}
         columnWrapperStyle={styles.row}
-        renderItem={({ item }) => (
-          <View style={styles.gridItem}>
-            <MangaItem manga={item} />
-          </View>
-        )}
+        renderItem={({ item }) => {
+          if (item.id === 'placeholder') {
+            return <View style={[styles.gridItem, { backgroundColor: 'transparent' }]} />
+          }
+          return (
+            <View style={styles.gridItem}>
+              <MangaItem manga={item} />
+            </View>
+          )
+        }}
         scrollEnabled={false} // scroll cha handle
       />
     </View>

@@ -80,14 +80,18 @@ export default function SearchScreen() {
     return null
   }
 
-  const renderItem = useCallback(
-    ({ item }: { item: Manga }) => (
-      <View style={styles.gridItem}>
-        <MangaItem manga={item} />
-      </View>
-    ),
-    []
-  )
+  // clone list data
+  const displayedMangas = useMemo(() => {
+    if (!mangas) return []
+    const list = [...mangas]
+
+    // chỉ thêm placeholder khi không rỗng và lẻ
+    if (list.length > 0 && list.length % 2 !== 0) {
+      list.push({ id: 'placeholder' } as any)
+    }
+
+    return list
+  }, [mangas])
 
   const renderEmptyComponent = () => {
     if (isLoading) {
@@ -146,11 +150,19 @@ export default function SearchScreen() {
         )}
 
         <FlatList
-          data={mangas}
+          data={displayedMangas}
           keyExtractor={item => item.id.toString()}
           numColumns={2}
           columnWrapperStyle={mangas.length > 0 ? styles.row : undefined}
-          renderItem={renderItem}
+          renderItem={({ item }) =>
+            item.id === 'placeholder' ? (
+              <View style={[styles.gridItem, { backgroundColor: 'transparent' }]} />
+            ) : (
+              <View style={styles.gridItem}>
+                <MangaItem manga={item} />
+              </View>
+            )
+          }
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.3}
           ListFooterComponent={renderFooter}

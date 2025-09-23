@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ScrollView, View, Text, Image, TouchableOpacity, SafeAreaViewBase } from 'react-native'
+import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native'
 import { Manga } from '@/api/paginate'
 // import { getAuthorById } from '@/api/Author/getAuthorById';
 import { MangaStatus, OriginalLanguage, ContentRating } from '@/utils/enums'
@@ -30,7 +30,7 @@ export default function MangaDetailScreen({ manga }: MangaDetailPageProps) {
   return (
     <View style={{ flex: 1, backgroundColor: '#000000ff' }}>
       <ScrollView style={{ flex: 1, backgroundColor: '#0f172a' }}>
-        <View style={{ alignItems: 'center', padding: 16, paddingTop: 70 }}>
+        <View style={{ alignItems: 'center', padding: 16, paddingTop: 50 }}>
           <Image
             source={{ uri: coverImageUrl }}
             defaultSource={require('@/assets/images/xin-loi-ouguri-cap-cua-toi-an-het-anh-roi.jpg')}

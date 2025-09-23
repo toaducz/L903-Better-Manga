@@ -8,18 +8,30 @@ interface MangaGridProps {
 }
 
 const MangaGrid: React.FC<MangaGridProps> = ({ mangas }) => {
+  let data = mangas ? [...mangas] : []
+
+  // Nếu số item lẻ → thêm placeholder nhìn cho đỡ bẩn mắt
+  if (data.length % 2 !== 0) {
+    data.push({ id: 'placeholder' } as any)
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={mangas}
+        data={data}
         keyExtractor={item => item.id.toString()}
         numColumns={2}
         columnWrapperStyle={styles.row}
-        renderItem={({ item }) => (
-          <View style={styles.gridItem}>
-            <MangaItem manga={item} />
-          </View>
-        )}
+        renderItem={({ item }) => {
+          if (item.id === 'placeholder') {
+            return <View style={[styles.gridItem, { backgroundColor: 'transparent' }]} />
+          }
+          return (
+            <View style={styles.gridItem}>
+              <MangaItem manga={item} />
+            </View>
+          )
+        }}
         scrollEnabled={false} // scroll cha handle
       />
     </View>

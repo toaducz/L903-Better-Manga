@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { View, Image, FlatList, Dimensions, StyleSheet, ActivityIndicator } from 'react-native'
-import Loading from '@/components/status/loading'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ChapterDetail } from '@/api/chapter/get-detail-chapter-by-id'
 import ChapterNavigator from '@/components/chapter/chapter-navigator'

@@ -1,11 +1,12 @@
 import React from 'react'
-import { View, ScrollView, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { useQuery } from '@tanstack/react-query'
 import { getMangaById } from '@/api/manga/get-detail-manga-by-id'
 import MangaDetailScreen from '../screen/manga-detail-screen'
 import Loading from '@/components/status/loading'
 import Error from '@/components/status/error'
 import { useLocalSearchParams } from 'expo-router'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function MangaDetailPageWrapper() {
   return <MangaDetailContent />
@@ -36,9 +37,9 @@ function MangaDetailContent() {
   }
 
   return (
-    <View style={[styles.container, { flex: 1, backgroundColor }]}>
+    <SafeAreaView edges={['bottom']} style={[styles.container, { flex: 1, backgroundColor }]}>
       <MangaDetailScreen manga={manga.data} />
-    </View>
+    </SafeAreaView>
   )
 }
 

@@ -37,11 +37,11 @@ export default function RootLayout() {
             <Stack.Screen
               name='manga-detail/[id]'
               options={{
-                // title: '',
-                // headerStyle: { backgroundColor: '#192d5aff' },
-                // headerTintColor: '#fff',
-                // headerTitleStyle: { fontWeight: 'bold', fontSize: 18 },
-                headerShown: false
+                headerTitle: '',
+                headerStyle: { backgroundColor: '#192d5aff' },
+                headerTintColor: '#fff',
+                headerTitleStyle: { fontWeight: 'bold', fontSize: 18 }
+                // headerShown: false
               }}
             />
             <Stack.Screen
@@ -50,7 +50,15 @@ export default function RootLayout() {
                 headerShown: false
               }}
             />
-            {/* <Stack.Screen name='anime-search-result' options={{ title: 'Kết quả tìm kiếm' }} /> */}
+            <Stack.Screen
+              name='tag/[id]'
+              options={{
+                title: 'Tìm kiếm nâng cao',
+                headerStyle: { backgroundColor: '#192d5aff' },
+                headerTintColor: '#fff', // màu icon back
+                headerTitleStyle: { fontWeight: 'bold', fontSize: 18 }
+              }}
+            />
           </Stack>
           <StatusBar style='auto' />
         </View>
